@@ -1,0 +1,20 @@
+[
+    {
+        "_id": 1,
+        "_name": "Lionel",
+        "_surname": "Messi",
+        "_birth_year": 1987,
+        "_status": "Active",
+        "_health": 95,
+        "_salary": 500000.0
+    },
+    {
+        "_id": 2,
+        "_name": "Cristiano",
+        "_surname": "Ronaldo",
+        "_birth_year": 1985,
+        "_status": "Active",
+        "_health": 90,
+        "_salary": 450000.0
+    }
+]

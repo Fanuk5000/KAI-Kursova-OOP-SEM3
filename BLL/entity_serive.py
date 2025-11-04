@@ -1,0 +1,1 @@
+# here will be edited configuration of football matches and players
