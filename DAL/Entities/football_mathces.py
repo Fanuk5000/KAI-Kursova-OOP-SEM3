@@ -77,8 +77,15 @@ class FootBallMatch:
     def add_player(self, player: FootballPlayer) -> None:
         if not isinstance(player, FootballPlayer):
             raise TypeError("Expected a FootballPlayer instance")
+        if player in self._players:
+            raise ValueError("Player already exists in the match")
         self._players.append(player)
 
+    def remove_player(self, player: FootballPlayer) -> None:
+        if player in self._players:
+            self._players.remove(player)
+        else:
+            raise ValueError("Player not found in the match")
 
     def to_dict(self) -> dict:
         """Convert FootBallMatch to a dictionary."""

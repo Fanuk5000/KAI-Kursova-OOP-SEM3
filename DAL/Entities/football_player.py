@@ -16,7 +16,7 @@ class FootballPlayer:
         self._id = f"{name[0]}{surname[0]}{birth_date.replace('-', '')}"
 
     @property
-    def id(self) -> int:
+    def id(self) -> str:
         return self._id
     
     @property
@@ -120,5 +120,3 @@ class FootballPlayer:
             health=data["health"],
             salary=data["salary"],
         )
-
-ft_player = FootballPlayer("John", "Doe", "15-04-1990", "Active", 90, 300000.0)
