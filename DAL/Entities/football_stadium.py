@@ -7,6 +7,12 @@ class FootballStadium:
         self.price_for_place = price_for_place
         self.football_match = football_match
 
+        self.__id = f"{stadium_name[0]}{football_match.id}"
+
+    @property
+    def id(self) -> str:
+        return self.__id
+    
     @property
     def stadium_name(self) -> str:
         return self._stadium_name

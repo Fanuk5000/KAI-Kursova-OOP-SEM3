@@ -18,11 +18,11 @@ class FootballMatch:
         self.viewers = viewers
 
         day, month, year = match_date.split('-')
-        self._id = f"{home_team[0]}{away_team[0]}{day}{month}{year}"
+        self.__id = f"{home_team[0]}{away_team[0]}{day}{month}{year}"
 
     @property
     def id(self) -> str:
-        return self._id
+        return self.__id
 
     @property
     def home_team(self) -> str:
@@ -89,8 +89,9 @@ class FootballMatch:
             raise ValueError("Player not found in the match")
 
     def to_dict(self) -> dict:
-        """Convert FootBallMatch to a dictionary."""
+        """Convert FootballMatch to a dictionary."""
         return {
+            "id": self.id,
             "match_place": self.match_place,
             "home_team": self.home_team,
             "away_team": self.away_team,
