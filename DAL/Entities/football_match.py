@@ -116,7 +116,7 @@ class FootballMatch:
         )
 
     def __str__(self) -> str:
-        return (f"FootBallMatch(id={self._id}, "
+        return (f"FootBallMatch(id={self.id}, "
                 f"match_place='{self.match_place}', "
                 f"home_team='{self.home_team}', away_team='{self.away_team}', "
                 f"match_date='{self.match_date}', score='{self.score}', "
