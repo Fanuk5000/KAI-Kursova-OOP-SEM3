@@ -1,5 +1,5 @@
 from DAL.Entities.football_player import FootballPlayer
-from DAL.Entities.football_mathces import FootBallMatch
+from DAL.Entities.football_match import FootballMatch
 from DAL.file_manipulations import PlayerFileManager
 from DAL.file_manipulations import MatchFileManager
 
@@ -12,7 +12,7 @@ def main():
         FootballPlayer("Lionel", "Messi", "24-06-1987", "Active", 95, 500000.0),
         FootballPlayer("Cristiano", "Ronaldo", "05-02-1985", "Active", 90, 450000.0),
     ]
-    match = FootBallMatch("Ukraine", "TeamA", "TeamB", "24-06-1987", "2:1")
+    match = FootballMatch("Ukraine", "TeamA", "TeamB", "24-06-1987", "2:1")
     match.add_player(players[0])
     player_file_manager.serialize(players)
 

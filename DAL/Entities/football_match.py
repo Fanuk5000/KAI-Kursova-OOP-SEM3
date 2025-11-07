@@ -1,13 +1,13 @@
 from DAL.Entities.football_player import FootballPlayer
 import re
 
-class FootBallMatch:
+class FootballMatch:
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SCORE_PATTERN = r"^\d{1,2}:\d{1,2}$"
 
     def __init__(self, match_place: str, home_team: str, away_team: str,
                  match_date: str, score: str = "00:00",
-                 players: list[FootballPlayer] = None, viewers: int = 0):
+                 players: list[FootballPlayer] = None, viewers: int = 0): # type: ignore
         self.match_place = match_place
         self.home_team = home_team
         self.away_team = away_team
@@ -81,8 +81,9 @@ class FootBallMatch:
             raise ValueError("Player already exists in the match")
         self._players.append(player)
 
-    def remove_player(self, player: FootballPlayer) -> None:
-        if player in self._players:
+    def remove_player(self, player_id: str) -> None:
+        player = (player for player in self._players if player.id == player_id)
+        if player:
             self._players.remove(player)
         else:
             raise ValueError("Player not found in the match")
@@ -100,7 +101,7 @@ class FootBallMatch:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'FootBallMatch':
+    def from_dict(cls, data: dict) -> 'FootballMatch':
         """Create a FootBallMatch from a dictionary."""
         players = [FootballPlayer.from_dict(player) for player in data["players"]]
         return cls(
