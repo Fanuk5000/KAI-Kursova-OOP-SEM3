@@ -1,4 +1,3 @@
-# here will be edited configuration of football matches and players
 from os import path
 
 from DAL.Entities.football_match import FootballMatch
@@ -179,6 +178,12 @@ class MatchService:
         match_file_manager.serialize(sorted_matches)
     
     @staticmethod
+    def sort_matches_by_match_status() -> None:
+        matches = match_file_manager.deserialize()
+        sorted_matches = sorted(matches, key=lambda match: match.match_status)
+        match_file_manager.serialize(sorted_matches)
+    
+    @staticmethod
     def print_all_matches() -> None:
         matches = match_file_manager.deserialize()
         for match in matches:
@@ -241,6 +246,12 @@ class StadiumService:
                 print(stadium)
         else:
             print(f"No stadium with id {stadium_id} found")
+    
+    @staticmethod
+    def print_all_stadiums() -> None:
+        stadiums = stadium_file_manager.deserialize()
+        for stadium in stadiums:
+            print(stadium)
 
 class SearchEngine:
     pass

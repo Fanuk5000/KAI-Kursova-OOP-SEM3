@@ -81,5 +81,6 @@ class FootballStadium:
     def __str__(self):
         return (f"FootballStadium(name={self.stadium_name}, seats={self.seats_amount}, "
                f"price_for_place={self.price_for_place}), "
+               f"date of the match={self.football_match.match_date}), "
                f"Playing {self.football_match.home_team} vs {self.football_match.away_team} on {self.football_match.match_date})")
 

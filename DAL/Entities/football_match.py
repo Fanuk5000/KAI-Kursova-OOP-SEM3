@@ -4,15 +4,17 @@ import re
 class FootballMatch:
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SCORE_PATTERN = r"^\d{1,2}:\d{1,2}$"
+    POSSIBLE_STATUSES: set = {"Won", "Lost", "Draw", "Not played yet"}
 
     def __init__(self, match_place: str, home_team: str, away_team: str,
-                 match_date: str, score: str = "00:00",
-                 players: list[FootballPlayer] = None, viewers: int = 0): # type: ignore
+                 match_date: str, match_status: str, score: str = "00:00",
+                 players: list[FootballPlayer] = None, viewers: int = 0):# type: ignore
         self.match_place = match_place
         self.home_team = home_team
         self.away_team = away_team
         self.match_date = match_date
         self.score = score
+        self.match_status = match_status
 
         self._players: list = players if players is not None else []
         self.viewers = viewers
@@ -29,40 +31,53 @@ class FootballMatch:
         return self._home_team
 
     @home_team.setter
-    def home_team(self, value: str) -> None:
-        if not isinstance(value, str):
+    def home_team(self, new_home_team: str) -> None:
+        if not isinstance(new_home_team, str):
             raise TypeError("Home team name must be a string")
-        self._home_team = value
+        self._home_team = new_home_team
 
     @property
     def away_team(self) -> str:
         return self._away_team
 
     @away_team.setter
-    def away_team(self, value: str) -> None:
-        if not isinstance(value, str):
+    def away_team(self, new_away_team: str) -> None:
+        if not isinstance(new_away_team, str):
             raise TypeError("Away team name must be a string")
-        self._away_team = value
+        self._away_team = new_away_team
 
     @property
     def match_date(self) -> str:
         return self._match_date
     
     @match_date.setter
-    def match_date(self, value: str) -> None:
-        if not re.match(self.PATTERN_DATE, value):
-            raise ValueError(f"Invalid date format of {value} in FootBallMatch. Expected DD-MM-YYYY")
-        self._match_date = value
-    
+    def match_date(self, new_match_date: str) -> None:
+        if not re.match(self.PATTERN_DATE, new_match_date):
+            raise ValueError(f"Invalid date format of {new_match_date} in FootBallMatch. Expected DD-MM-YYYY")
+        self._match_date = new_match_date
+
     @property
     def score(self) -> str:
         return self._score
 
     @score.setter
-    def score(self, value: str) -> None:
-        if not re.match(self.SCORE_PATTERN, value):
+    def score(self, new_score: str) -> None:
+        if not re.match(self.SCORE_PATTERN, new_score):
             raise ValueError("Invalid score format. Expected 'X:Y'")
-        self._score = value
+        self._score = new_score
+
+    @property
+    def match_status(self) -> str:
+        return self._match_status
+
+    @match_status.setter
+    def match_status(self, new_match_status: str) -> None:
+        if not isinstance(new_match_status, str):
+            raise TypeError("Match status must be a string")
+        if new_match_status not in self.POSSIBLE_STATUSES:
+            raise ValueError(f"Invalid match status: {new_match_status}. Must be one of {self.POSSIBLE_STATUSES}")
+        # in future: if match is not played yet, score must be "00:00" and if current date < match_date, status must be "Not played yet"
+        self._match_status = new_match_status
 
     @property
     def players(self) -> list:
@@ -104,14 +119,15 @@ class FootballMatch:
     @classmethod
     def from_dict(cls, data: dict) -> 'FootballMatch':
         """Create a FootBallMatch from a dictionary."""
-        players = [FootballPlayer.from_dict(player) for player in data["players"]]
+        dict_players = [FootballPlayer.from_dict(player) for player in data["players"]]
         return cls(
             match_place=data["match_place"],
             home_team=data["home_team"],
             away_team=data["away_team"],
             match_date=data["match_date"],
+            match_status=data["match_status"],
             score=data["score"],
-            players=players,
+            players=dict_players,
             viewers=data["viewers"],
         )
 
