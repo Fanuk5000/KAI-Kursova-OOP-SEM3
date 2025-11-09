@@ -99,16 +99,18 @@ class MatchService:
             print(f"No match with id {match_id} found")
 
     @staticmethod
-    def add_player_to_match(chosen_match_id: str, new_player: FootballPlayer) -> None:
+    def add_player_to_match(chosen_match_id: str, new_player_id: str) -> None:
         if not isinstance(chosen_match_id, str):
             raise TypeError("match_id must be a string while adding player to the match")
-        if not isinstance(new_player, FootballPlayer):
-            raise TypeError("new_player must be a FootballPlayer class while adding to the match")
+        if not isinstance(new_player_id, str):
+            raise TypeError("new_player_id must be a string while adding to the match")
         
         players = player_file_manager.deserialize()
-        if new_player not in players:
+        if new_player_id not in [player.id for player in players]:
             raise ValueError("Player must be added to the players list before being added to a match")
-        
+        else:
+            suitable_players = [player for player in players if player.id == new_player_id]
+            new_player = suitable_players[0]
         matches = match_file_manager.deserialize()
         suitable_matches:list[FootballMatch] = [match for match in matches if match.id == chosen_match_id]
         

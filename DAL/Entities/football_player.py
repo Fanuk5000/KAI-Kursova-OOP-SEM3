@@ -5,7 +5,17 @@ class FootballPlayer:
     SALARY_LIMIT = 1000000
     POSSIBLE_STATUS: set = {"Active", "Injured", "Retired", "Dead"}
 
-    def __init__(self, name: str, surname: str, birth_date: str, status: str, health: int, salary: float):
+    def __init__(self, name: str, surname: str, birth_date: str, status: str, health: float, salary: float):
+        """Initialize a FootballPlayer instance.
+
+        Args:
+            name (str): name of the player
+            surname (str): surname of the player
+            birth_date (str): birth date of the player
+            status (str): status of the player
+            health (int): health of the player
+            salary (float): salary of the player
+        """
         self.name = name
         self.surname = surname
         self.birth_date = birth_date
@@ -64,19 +74,19 @@ class FootballPlayer:
         self._status = value
 
     @property
-    def health(self) -> int:
+    def health(self) -> float:
         return self._health
 
     @health.setter
-    def health(self, value: int) -> None:
-        if not isinstance(value, int):
+    def health(self, value: float) -> None:
+        if not isinstance(value, (float, int)):
             self._health = 0
-            raise TypeError("Health must be an integer")
+            raise TypeError("Health must be a number")
         if not (0 <= value <= 100):
             self._health = 0
             raise ValueError("Health must be between 0 and 100")
 
-        self._health = value
+        self._health = float(value)
 
     @property
     def salary(self) -> float:

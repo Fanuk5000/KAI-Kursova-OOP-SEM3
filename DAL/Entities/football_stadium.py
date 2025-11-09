@@ -1,13 +1,21 @@
 from DAL.Entities.football_match import FootballMatch
 
 class FootballStadium:
-    def __init__(self, stadium_name: str, seats_amount: int, price_for_place: float, football_match: FootballMatch):  # type: ignore
+    def __init__(self, stadium_name: str, seats_amount: int, price_for_place: float, football_match: FootballMatch = None):  # type: ignore
+        """Initialize a FootballStadium instance.
+
+        Args:
+            stadium_name (str): _name of the stadium_
+            seats_amount (int): _description_
+            price_for_place (float): _description_
+            football_match (FootballMatch): _description_
+        """
         self.stadium_name = stadium_name
         self.seats_amount = seats_amount
         self.price_for_place = price_for_place
         self.football_match = football_match
 
-        self.__id = f"{stadium_name[0]}{football_match.id}"
+        self.__id = f"{stadium_name[0]}{seats_amount}{price_for_place}{stadium_name[-1]}"
 
     @property
     def id(self) -> str:
@@ -33,8 +41,11 @@ class FootballStadium:
             raise TypeError("Seats amount must be an integer")
         if new_seats_amount <= 0:
             raise ValueError("Seats amount cannot be negative or zero")
-        if new_seats_amount > self.seats_amount:
-            raise ValueError("Seats amount cannot be increased")
+        try:
+            if new_seats_amount > self.seats_amount:
+                raise ValueError("Seats amount cannot be increased")
+        except AttributeError:
+            pass
         self._seats_amount = new_seats_amount
 
     @property
@@ -55,27 +66,30 @@ class FootballStadium:
     
     @football_match.setter
     def football_match(self, new_football_match: FootballMatch) -> None:
-        if not isinstance(new_football_match, FootballMatch):
+        if new_football_match is not None and not isinstance(new_football_match, FootballMatch):
             raise TypeError("football_match must be a FootballMatch instance")
         self._football_match = new_football_match
 
     def to_dict(self) -> dict:
         """Convert FootballStadium to a dictionary."""
+        in_football_match = self.football_match.to_dict() if self.football_match else None
         return {
             "stadium_name": self.stadium_name,
             "seats_amount": self.seats_amount,
             "price_for_place": self.price_for_place,
-            "football_match": self.football_match.to_dict(),
+            "football_match": in_football_match,
         }
     
     @classmethod
     def from_dict(cls, data: dict) -> 'FootballStadium':
         """Create a FootballStadium from a dictionary."""
+        in_football_match = FootballMatch.from_dict(data["football_match"]) if data["football_match"] else None
+        
         return cls(
             stadium_name=data["stadium_name"],
             seats_amount=data["seats_amount"],
             price_for_place=data["price_for_place"],
-            football_match=FootballMatch.from_dict(data["football_match"]),
+            football_match=in_football_match,  # type: ignore
         )
 
     def __str__(self):

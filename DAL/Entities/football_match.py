@@ -9,6 +9,18 @@ class FootballMatch:
     def __init__(self, match_place: str, home_team: str, away_team: str,
                  match_date: str, match_status: str, score: str = "00:00",
                  players: list[FootballPlayer] = None, viewers: int = 0):# type: ignore
+        """Initialize a FootballMatch instance.
+
+        Args:
+            match_place (str): The place where the match is held.
+            home_team (str): The name of the home team.
+            away_team (str): The name of the away team.
+            match_date (str): The date of the match in DD-MM-YYYY format.
+            match_status (str): The current status of the match.
+            score (str, optional): The score of the match in X:Y format. Defaults to "00:00".
+            players (list[FootballPlayer], optional): The players participating in the match. Defaults to None.
+            viewers (int, optional): The number of viewers for the match. Defaults to 0.
+        """
         self.match_place = match_place
         self.home_team = home_team
         self.away_team = away_team
