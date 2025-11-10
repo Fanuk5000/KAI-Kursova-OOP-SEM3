@@ -256,4 +256,43 @@ class StadiumService:
             print(stadium)
 
 class SearchEngine:
-    pass
+    @staticmethod
+    def find_player_by_name_or_surname(name_or_surname: str) -> None:
+        if not isinstance(name_or_surname, str):
+            raise TypeError("name_or_surname must be a string while searching for player")
+        players = player_file_manager.deserialize()
+        suitable_players = [player for player in players if player.name == name_or_surname or player.surname == name_or_surname]
+        
+        if suitable_players:
+            for player in suitable_players:
+                print(player)
+        else:
+            print(f"No player with name or surname '{name_or_surname}' found")
+    
+    @staticmethod
+    def find_match_by_date_and_opponent(match_date: str, opponent_team: str) -> None:
+        if not isinstance(match_date, str):
+            raise TypeError("match_date must be a string while searching for match")
+        if not isinstance(opponent_team, str):
+            raise TypeError("opponent_team must be a string while searching for match")
+        matches = match_file_manager.deserialize()
+        suitable_matches = [match for match in matches if match.match_date == match_date and match.away_team == opponent_team]
+        
+        if suitable_matches:
+            for match in suitable_matches:
+                print(match)
+        else:
+            print(f"No match on date '{match_date}' with opponent team '{opponent_team}' found")
+
+    @staticmethod
+    def find_stadium_by_name(stadium_name: str) -> None:
+        if not isinstance(stadium_name, str):
+            raise TypeError("stadium_name must be a string while searching for stadium")
+        stadiums = stadium_file_manager.deserialize()
+        suitable_stadiums = [stadium for stadium in stadiums if stadium.stadium_name == stadium_name]
+        
+        if suitable_stadiums:
+            for stadium in suitable_stadiums:
+                print(stadium)
+        else:
+            print(f"No stadium with name '{stadium_name}' found")

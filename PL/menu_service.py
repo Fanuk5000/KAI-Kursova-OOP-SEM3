@@ -5,7 +5,11 @@ from DAL.Entities.football_match import FootballMatch
 from DAL.Entities.football_player import FootballPlayer
 from DAL.Entities.football_stadium import FootballStadium
 
-from BLL.entity_services import PlayerService, StadiumService, MatchService
+from BLL.entity_services import (
+    PlayerService,
+    StadiumService,
+    MatchService,
+    SearchEngine)
 
 player_service = PlayerService()
 stadium_service = StadiumService()
@@ -54,6 +58,11 @@ class MenuService:
                            4: "View stadium info by id",
                            5: "View all stadiums info",
                            6: "Back to Main Menu"}
+    
+    search_menu_choice = {1: "Find player by name or surname",
+                          2: "Find match by date and opponent",
+                          3: "Find stadium by name",
+                          4: "Back to Main Menu"}
     @classmethod
     def _initialize_commands(cls) -> None:
         cls.main_menu_commands = [cls._display_player_menu,
@@ -86,6 +95,11 @@ class MenuService:
                                      cls._view_stadium_info,
                                      stadium_service.print_all_stadiums,
                                      cls._display_main_menu]
+        
+        cls.search_menu_commands = [cls._find_player_by_name_or_surname,
+                                    cls._find_match_by_date_and_opponent,
+                                    cls._find_stadium_by_name,
+                                    cls._display_main_menu]
     
     @classmethod
     def _display_main_menu(cls) -> int | None:
@@ -295,6 +309,31 @@ class MenuService:
             stadium_service.stadium_info(stadium_id)
         except (TypeError, ValueError) as e:
             print(f"Error viewing stadium info: {e}")
+    # Search methods ----------------------------------------
+    @classmethod
+    def _find_player_by_name_or_surname(cls) -> None:
+        search_query = input("Enter player name or surname to search: ")
+        try:
+            SearchEngine.find_player_by_name_or_surname(search_query)
+        except (TypeError, ValueError) as e:
+            print(f"Error searching for player: {e}")
+    
+    @classmethod
+    def _find_match_by_date_and_opponent(cls) -> None:
+        search_date = input("Enter match date to search (YYYY-MM-DD): ")
+        opponent_team = input("Enter opponent team name to search: ")
+        try:
+            SearchEngine.find_match_by_date_and_opponent(search_date, opponent_team)
+        except (TypeError, ValueError) as e:
+            print(f"Error searching for match: {e}")
+
+    @classmethod
+    def _find_stadium_by_name(cls) -> None:
+        stadium_name = input("Enter stadium name to search: ")
+        try:
+            SearchEngine.find_stadium_by_name(stadium_name)
+        except (TypeError, ValueError) as e:
+            print(f"Error searching for stadium: {e}")
     # -------------------------------------------------------
     @classmethod
     def run_main_menu(cls) -> None:
@@ -316,6 +355,8 @@ class MenuService:
                         cls.stadium_menu_commands[some_menu_choice - 1]()
                     elif main_menu_choice == 3:
                         cls.match_menu_commands[some_menu_choice - 1]()
+                    elif main_menu_choice == 4:
+                        cls.search_menu_commands[some_menu_choice - 1]()
                     sleep(TIME_SLEEP)
                     os.system('clear')
             else:
