@@ -37,7 +37,16 @@ class FootballMatch:
     @property
     def id(self) -> str:
         return self.__id
-
+    
+    @property
+    def match_place(self) -> str:
+        return self._match_place
+    
+    @match_place.setter
+    def match_place(self, new_match_place: str) -> None:
+        if not isinstance(new_match_place, str):
+            raise TypeError("Match place must be a string")
+        self._match_place = new_match_place
     @property
     def home_team(self) -> str:
         return self._home_team
@@ -101,6 +110,18 @@ class FootballMatch:
             raise TypeError("All players must be instances of FootballPlayer")
         self._players = players
 
+    @property
+    def viewers(self) -> int:
+        return self._viewers
+    
+    @viewers.setter
+    def viewers(self, new_viewers: int) -> None:
+        if not isinstance(new_viewers, int):
+            raise TypeError("Viewers must be an integer")
+        if new_viewers <= 0:
+            raise ValueError("Viewers cannot be negative or zero")
+        self._viewers = new_viewers
+    
     def add_player(self, player: FootballPlayer) -> None:
         if not isinstance(player, FootballPlayer):
             raise TypeError("Expected a FootballPlayer instance")
@@ -109,9 +130,10 @@ class FootballMatch:
         self._players.append(player)
 
     def remove_player(self, player_id: str) -> None:
-        player = (player for player in self._players if player.id == player_id)
+        player = [player for player in self._players if player.id == player_id]
         if player:
-            self._players.remove(player)
+            for player in player:
+                self._players.remove(player)
         else:
             raise ValueError("Player not found in the match")
 

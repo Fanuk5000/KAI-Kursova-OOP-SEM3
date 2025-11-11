@@ -58,7 +58,7 @@ class FootballPlayer:
         if not isinstance(value, str):
             raise TypeError("Birth date must be a string")
         if not re.match(self.PATTERN_DATE, value):
-            raise TypeError("Birth date must be a valid date in the format DD-MM-YYYY")
+            raise ValueError("Birth date must be a valid date in the format DD-MM-YYYY")
         self._birth_date = value
 
     @property
