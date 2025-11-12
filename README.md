@@ -90,3 +90,24 @@ Install coverage (already in requirements.txt). Generate coverage report:
 - pytest documentation — https://docs.pytest.org
 - Diagram generation - https://pypi.org/project/pylint/
 - coverage.py documentation — https://coverage.readthedocs.io/
+
+# Example usage
+## Football player
+<img width="1425" height="91" alt="image" src="https://github.com/user-attachments/assets/cf381d62-509b-4aef-afec-9c7a3b6f225d" />
+Adding a player with these charestistics, as result see .json file with them:
+<img width="628" height="373" alt="image" src="https://github.com/user-attachments/assets/d1252f74-aeb8-49d6-8918-23f41593408d" />
+
+## Football match
+<img width="1587" height="135" alt="image" src="https://github.com/user-attachments/assets/1c2676e2-5351-4564-948e-9b6841a8b9f6" />
+<img width="1092" height="139" alt="image" src="https://github.com/user-attachments/assets/f415af80-1538-4202-90ca-fd8d4691a8d6" />
+Adding the match and previous player to the match, and out result is:
+<img width="668" height="734" alt="image" src="https://github.com/user-attachments/assets/d40f48ee-7b95-4c6b-8387-8e87494a38bf" />
+
+## Football stadium
+<img width="965" height="47" alt="image" src="https://github.com/user-attachments/assets/e7bb1de5-00bf-4190-ac4f-e37af01687cf" />
+<img width="372" height="73" alt="image" src="https://github.com/user-attachments/assets/e959edce-5ced-4571-853d-d4426ca8c51f" />
+
+Creating stadium and adding a previously made match here, result:
+<img width="608" height="767" alt="image" src="https://github.com/user-attachments/assets/eb706b44-cbc3-42fb-a063-6174a9fe6810" />
+
+
