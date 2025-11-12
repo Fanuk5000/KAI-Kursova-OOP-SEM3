@@ -68,7 +68,7 @@ class MenuService:
         cls.main_menu_commands = [cls._display_player_menu,
                                    cls._display_stadium_menu,
                                    cls._display_match_menu,
-                                   print("Search entities - Not implemented yet"),
+                                   cls._display_search_menu,
                                    cls.exit_program]
         
         cls.player_menu_commands = [cls._add_player_to_file,
@@ -76,7 +76,7 @@ class MenuService:
                                     cls._change_player_attribute,
                                     cls._view_player_info,
                                     player_service.list_all_players,
-                                    cls._display_main_menu]
+                                    cls._move_to_main_menu]
 
         cls.match_menu_commands = [cls._add_match_to_file,
                                    cls._remove_match_from_file,
@@ -87,20 +87,24 @@ class MenuService:
                                    cls._change_match_attribute,
                                    match_service.sort_matches_by_date,
                                    match_service.sort_matches_by_match_status,
-                                   cls._display_main_menu]
+                                   cls._move_to_main_menu]
         
         cls.stadium_menu_commands = [cls._add_stadium_to_file,
                                      cls._remove_stadium_from_file,
                                      cls._change_stadium_attribute,
                                      cls._view_stadium_info,
                                      stadium_service.print_all_stadiums,
-                                     cls._display_main_menu]
+                                     cls._move_to_main_menu]
         
         cls.search_menu_commands = [cls._find_player_by_name_or_surname,
                                     cls._find_match_by_date_and_opponent,
                                     cls._find_stadium_by_name,
-                                    cls._display_main_menu]
+                                    cls._move_to_main_menu]
     
+    @classmethod
+    def _move_to_main_menu(cls) -> None:
+        print("Returning to Main Menu...")
+
     @classmethod
     def _display_main_menu(cls) -> int | None:
         print("=== Football Management System ===")
@@ -131,6 +135,14 @@ class MenuService:
         for key, value in cls.match_menu_choice.items():
             print(f"{key}. {value}")
         choice = cls._right_input(cls.match_menu_choice)
+        return choice
+
+    @classmethod
+    def _display_search_menu(cls) -> int | None:
+        print("=== Search Management ===")
+        for key, value in cls.search_menu_choice.items():
+            print(f"{key}. {value}")
+        choice = cls._right_input(cls.search_menu_choice)
         return choice
 
     @classmethod
@@ -338,7 +350,7 @@ class MenuService:
     @classmethod
     def run_main_menu(cls) -> None:
         cls._initialize_commands()
-        TIME_SLEEP = 2
+        TIME_SLEEP = 0.3
         while True:
             os.system('clear')
             main_menu_choice = cls._display_main_menu()
