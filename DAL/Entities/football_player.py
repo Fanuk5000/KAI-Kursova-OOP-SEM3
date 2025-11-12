@@ -3,7 +3,7 @@ import re
 class FootballPlayer:
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SALARY_LIMIT = 1000000
-    POSSIBLE_STATUS: set = {"Active", "Injured", "Retired", "Dead"}
+    POSSIBLE_STATUS: set = {"active", "injured", "retired", "dead"}
 
     def __init__(self, name: str, surname: str, birth_date: str, status: str, health: float, salary: float):
         """Initialize a FootballPlayer instance.
@@ -19,8 +19,8 @@ class FootballPlayer:
         self.name = name
         self.surname = surname
         self.birth_date = birth_date
-        self.status = status
         self.health = health
+        self.status = status
         self.salary = salary
         
         self._id = f"{name[0]}{surname[0]}{birth_date.replace('-', '')}"
@@ -67,10 +67,13 @@ class FootballPlayer:
 
     @status.setter
     def status(self, value: str) -> None:
+        value = value.lower()
         if not isinstance(value, str):
             raise TypeError("Status must be a string")
         if value not in self.POSSIBLE_STATUS:
             raise ValueError(f"Status must be one of {self.POSSIBLE_STATUS}")
+        if self.health <= 0 and value != "dead":
+            raise ValueError("Player with health 0 must have status 'dead'")
         self._status = value
 
     @property

@@ -15,7 +15,7 @@ class FootballStadium:
         self.price_for_place = price_for_place
         self.football_match = football_match
 
-        self.__id = f"{stadium_name[0]}{seats_amount}{price_for_place}{stadium_name[-1]}"
+        self.__id = f"{stadium_name[0]}{int(seats_amount)}{int(price_for_place)}{stadium_name[-1]}"
 
     @property
     def id(self) -> str:
@@ -74,6 +74,7 @@ class FootballStadium:
         """Convert FootballStadium to a dictionary."""
         in_football_match = self.football_match.to_dict() if self.football_match else None
         return {
+            "id": self.id,
             "stadium_name": self.stadium_name,
             "seats_amount": self.seats_amount,
             "price_for_place": self.price_for_place,

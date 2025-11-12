@@ -57,7 +57,8 @@ class MenuService:
                            3: "Update stadium attributes(seats_amount, price_for_place)",
                            4: "View stadium info by id",
                            5: "View all stadiums info",
-                           6: "Back to Main Menu"}
+                           6: "Add match by id to stadium",
+                           7: "Back to Main Menu"}
     
     search_menu_choice = {1: "Find player by name or surname",
                           2: "Find match by date and opponent",
@@ -94,6 +95,7 @@ class MenuService:
                                      cls._change_stadium_attribute,
                                      cls._view_stadium_info,
                                      stadium_service.print_all_stadiums,
+                                     cls._add_match_to_stadium,
                                      cls._move_to_main_menu]
         
         cls.search_menu_commands = [cls._find_player_by_name_or_surname,
@@ -209,7 +211,7 @@ class MenuService:
     # Match methods ---------------------------------------
     @classmethod
     def _add_match_to_file(cls) -> None:
-        new_instance = input("Enter match_place, home_team, away_team, match_date, match_status, score, players, viewers (space separated): ").split()
+        new_instance = input("Enter match_place, home_team, away_team, match_date, match_status, score, viewers (space separated): ").split()
         if len(new_instance) < 5:
             print("Invalid input. Please provide exactly 8 values.")
             return
@@ -313,6 +315,15 @@ class MenuService:
             stadium_service.change_stadium_attribute(stadium_id, stadium_attribute, new_value)
         except (TypeError, ValueError) as e:
             print(f"Error changing stadium attribute: {e}")
+    
+    @classmethod
+    def _add_match_to_stadium(cls) -> None:
+        stadium_id = input("Enter stadium id: ")
+        match_id = input("Enter match id: ")
+        try:
+            stadium_service.add_match_to_stadium(stadium_id, match_id)
+        except (TypeError, ValueError) as e:
+            print(f"Error adding match to stadium: {e}")
     
     @classmethod
     def _view_stadium_info(cls) -> None:

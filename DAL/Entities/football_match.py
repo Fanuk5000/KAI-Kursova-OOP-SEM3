@@ -4,11 +4,11 @@ import re
 class FootballMatch:
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SCORE_PATTERN = r"^\d{1,2}:\d{1,2}$"
-    POSSIBLE_STATUSES: set = {"Won", "Lost", "Draw", "Not played yet"}
+    POSSIBLE_STATUSES: set = {"won", "lost", "draw", "not_played_yet"}
 
     def __init__(self, match_place: str, home_team: str, away_team: str,
                  match_date: str, match_status: str, score: str = "00:00",
-                 players: list[FootballPlayer] = None, viewers: int = 0):# type: ignore
+                 viewers: int = 0, players: list[FootballPlayer] = None):# type: ignore
         """Initialize a FootballMatch instance.
 
         Args:
@@ -28,7 +28,7 @@ class FootballMatch:
         self.score = score
         self.match_status = match_status
 
-        self._players: list = players if players is not None else []
+        self._players: list[FootballPlayer] = players if players is not None else []
         self.viewers = viewers
 
         day, month, year = match_date.split('-')
@@ -93,6 +93,7 @@ class FootballMatch:
 
     @match_status.setter
     def match_status(self, new_match_status: str) -> None:
+        new_match_status = new_match_status.strip().lower()
         if not isinstance(new_match_status, str):
             raise TypeError("Match status must be a string")
         if new_match_status not in self.POSSIBLE_STATUSES:
@@ -118,7 +119,7 @@ class FootballMatch:
     def viewers(self, new_viewers: int) -> None:
         if not isinstance(new_viewers, int):
             raise TypeError("Viewers must be an integer")
-        if new_viewers <= 0:
+        if new_viewers < 0:
             raise ValueError("Viewers cannot be negative or zero")
         self._viewers = new_viewers
     
@@ -146,6 +147,7 @@ class FootballMatch:
             "away_team": self.away_team,
             "match_date": self.match_date,
             "score": self.score,
+            "match_status": self.match_status,
             "players": [player.to_dict() for player in self.players],
             "viewers": self.viewers,
         }
@@ -159,8 +161,8 @@ class FootballMatch:
             home_team=data["home_team"],
             away_team=data["away_team"],
             match_date=data["match_date"],
-            match_status=data["match_status"],
             score=data["score"],
+            match_status=data["match_status"],
             players=dict_players,
             viewers=data["viewers"],
         )

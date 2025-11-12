@@ -113,10 +113,12 @@ class MatchService:
             new_player = suitable_players[0]
         matches = match_file_manager.deserialize()
         suitable_matches:list[FootballMatch] = [match for match in matches if match.id == chosen_match_id]
-        
+        new_match: FootballMatch
+        print(suitable_matches)
         if suitable_matches:
-            for match in suitable_matches:
-                match.add_player(new_player)
+            for new_match in suitable_matches:
+                new_match.add_player(new_player)
+            match_file_manager.serialize([new_match]) # type: ignore
         else:
             print(f"No match with id {chosen_match_id} found")
     
@@ -232,6 +234,30 @@ class StadiumService:
                     print(f"TypeError occurred while change_stadium_attribute '{attribute}': {e}")
                 except ValueError as e:
                     print(f"ValueError occurred while change_stadium_attribute '{attribute}': {e}")
+            stadium_file_manager.serialize(stadiums)
+        else:
+            print(f"No stadium with id {stadium_id} found")
+
+    @staticmethod
+    def add_match_to_stadium(stadium_id: str, match_id: str) -> None:
+        if not isinstance(stadium_id, str):
+            raise TypeError("stadium_id must be a string while adding match to stadium")
+        if not isinstance(match_id, str):
+            raise TypeError("Expected a FootballMatch instance while adding match to stadium")
+        
+        stadiums = stadium_file_manager.deserialize()
+        suitable_stadiums = [stadium for stadium in stadiums if stadium.id == stadium_id]
+        
+        matches = match_file_manager.deserialize()
+        suitable_matches = [match for match in matches if match.id == match_id]
+        if not suitable_matches:
+            raise ValueError("Match must be added to the matches list before being added to a stadium")
+        else:
+            new_match = suitable_matches[0]
+        
+        if suitable_stadiums:
+            for stadium in suitable_stadiums:
+                stadium.football_match = new_match
             stadium_file_manager.serialize(stadiums)
         else:
             print(f"No stadium with id {stadium_id} found")
