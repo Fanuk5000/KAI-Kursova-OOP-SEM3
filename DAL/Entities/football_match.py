@@ -1,5 +1,6 @@
 from DAL.Entities.football_player import FootballPlayer
 import re
+from uuid import uuid4
 
 class FootballMatch:
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
@@ -8,7 +9,7 @@ class FootballMatch:
 
     def __init__(self, match_place: str, home_team: str, away_team: str,
                  match_date: str, match_status: str, score: str = "00:00",
-                 viewers: int = 0, players: list[FootballPlayer] = None):# type: ignore
+                 viewers: int = 0, players: list[FootballPlayer] = None, id: str = ''):# type: ignore
         """Initialize a FootballMatch instance.
 
         Args:
@@ -32,7 +33,7 @@ class FootballMatch:
         self.viewers = viewers
 
         day, month, year = match_date.split('-')
-        self.__id = f"{home_team[0]}{away_team[0]}{day}{month}{year}"
+        self.__id = id if id else str(uuid4())
 
     @property
     def id(self) -> str:
@@ -165,6 +166,7 @@ class FootballMatch:
             match_status=data["match_status"],
             players=dict_players,
             viewers=data["viewers"],
+            id=data["id"]
         )
 
     def __str__(self) -> str:

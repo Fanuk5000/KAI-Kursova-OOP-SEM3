@@ -380,7 +380,7 @@ class MenuService:
                         cls.match_menu_commands[some_menu_choice - 1]()
                     elif main_menu_choice == 4:
                         cls.search_menu_commands[some_menu_choice - 1]()
-                    sleep(TIME_SLEEP)
+                    sleep(2)
                     os.system('clear')
             else:
                 print("Invalid choice. Please try again.")

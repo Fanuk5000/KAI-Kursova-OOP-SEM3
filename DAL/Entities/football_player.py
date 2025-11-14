@@ -1,11 +1,12 @@
 import re
+from uuid import uuid4
 
 class FootballPlayer:
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SALARY_LIMIT = 1000000
     POSSIBLE_STATUS: set = {"active", "injured", "retired", "dead"}
 
-    def __init__(self, name: str, surname: str, birth_date: str, status: str, health: float, salary: float):
+    def __init__(self, name: str, surname: str, birth_date: str, status: str, health: float, salary: float, id : str = ''):
         """Initialize a FootballPlayer instance.
 
         Args:
@@ -22,12 +23,11 @@ class FootballPlayer:
         self.health = health
         self.status = status
         self.salary = salary
-        
-        self._id = f"{name[0]}{surname[0]}{birth_date.replace('-', '')}"
+        self.__id = id if id else str(uuid4())
 
     @property
     def id(self) -> str:
-        return self._id
+        return self.__id
     
     @property
     def name(self) -> str:
@@ -106,14 +106,14 @@ class FootballPlayer:
         self._salary = value
 
     def __str__(self) -> str:
-        return (f"FootballPlayer(id={self._id}, name='{self._name}', surname='{self._surname}', "
+        return (f"FootballPlayer(id={self.__id}, name='{self._name}', surname='{self._surname}', "
                 f"birth_date={self._birth_date}, status='{self._status}', health={self._health}, "
                 f"salary={self._salary})")
 
     def to_dict(self) -> dict:
         """Convert FootballPlayer to a dictionary."""
         return {
-            "id": self._id,
+            "id": self.__id,
             "name": self._name,
             "surname": self._surname,
             "birth_date": self._birth_date,
@@ -132,4 +132,5 @@ class FootballPlayer:
             status=data["status"],
             health=data["health"],
             salary=data["salary"],
+            id=data["id"],
         )

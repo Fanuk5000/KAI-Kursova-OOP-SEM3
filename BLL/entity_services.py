@@ -1,4 +1,5 @@
 from os import path
+from time import sleep
 
 from DAL.Entities.football_match import FootballMatch
 from DAL.Entities.football_player import FootballPlayer
@@ -9,6 +10,8 @@ from DAL.file_manipulations import PlayerFileManager, MatchFileManager, StadiumF
 match_file_manager = MatchFileManager("football_matches.json")
 stadium_file_manager = StadiumFileManager("football_stadiums.json")
 player_file_manager = PlayerFileManager("football_players.json")
+
+TIME_SLEEP = 1
 
 class PlayerService:
     @staticmethod
@@ -66,6 +69,7 @@ class PlayerService:
         if suitable_players:
             for player in suitable_players:
                 print(player)
+            sleep(TIME_SLEEP)
         else:
             print(f"No player with id {player_id} found")
 
@@ -74,6 +78,7 @@ class PlayerService:
         players = player_file_manager.deserialize()
         for player in players:
             print(player)
+        sleep(TIME_SLEEP)
 
 class MatchService:
     @staticmethod
@@ -172,6 +177,7 @@ class MatchService:
         if suitable_matches:
             for match in suitable_matches:
                 print(match)
+            sleep(TIME_SLEEP)
         else:
             print(f"No match with id {match_id} found")
     
@@ -192,6 +198,7 @@ class MatchService:
         matches = match_file_manager.deserialize()
         for match in matches:
             print(match)
+        sleep(TIME_SLEEP)
 
 class StadiumService:
     @staticmethod
@@ -280,6 +287,7 @@ class StadiumService:
         stadiums = stadium_file_manager.deserialize()
         for stadium in stadiums:
             print(stadium)
+        sleep(TIME_SLEEP)
 
 class SearchEngine:
     @staticmethod

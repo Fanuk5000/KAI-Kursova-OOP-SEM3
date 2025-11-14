@@ -1,7 +1,9 @@
 from DAL.Entities.football_match import FootballMatch
+from uuid import uuid4
+
 
 class FootballStadium:
-    def __init__(self, stadium_name: str, seats_amount: int, price_for_place: float, football_match: FootballMatch = None):  # type: ignore
+    def __init__(self, stadium_name: str, seats_amount: int, price_for_place: float, football_match: FootballMatch = None, id: str = ''):  # type: ignore
         """Initialize a FootballStadium instance.
 
         Args:
@@ -15,7 +17,7 @@ class FootballStadium:
         self.price_for_place = price_for_place
         self.football_match = football_match
 
-        self.__id = f"{stadium_name[0]}{int(seats_amount)}{int(price_for_place)}{stadium_name[-1]}"
+        self.__id = id if id else str(uuid4())
 
     @property
     def id(self) -> str:
@@ -91,6 +93,7 @@ class FootballStadium:
             seats_amount=data["seats_amount"],
             price_for_place=data["price_for_place"],
             football_match=in_football_match,  # type: ignore
+            id=data["id"]
         )
 
     def __str__(self):
