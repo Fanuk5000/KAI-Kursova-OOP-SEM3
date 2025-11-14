@@ -1,5 +1,3 @@
-from socket import NI_DGRAM
-from turtle import pen
 from uuid import uuid4
 
 from DAL.Entities.football_match import FootballMatch
