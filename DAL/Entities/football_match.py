@@ -1,8 +1,12 @@
-from DAL.Entities.football_player import FootballPlayer
 import re
 from uuid import uuid4
 
-class FootballMatch:
+from DAL.Entities.football_player import FootballPlayer
+from DAL.Entities.football_entity import FootballEntity
+from DAL.Entities.abs_layers import ABCFootballMatch
+
+
+class FootballMatch(FootballEntity, ABCFootballMatch):
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SCORE_PATTERN = r"^\d{1,2}:\d{1,2}$"
     POSSIBLE_STATUSES: set = {"won", "lost", "draw", "not_played_yet"}
@@ -22,7 +26,7 @@ class FootballMatch:
             players (list[FootballPlayer], optional): The players participating in the match. Defaults to None.
             viewers (int, optional): The number of viewers for the match. Defaults to 0.
         """
-        self.match_place = match_place
+        super().__init__(match_place, id)
         self.home_team = home_team
         self.away_team = away_team
         self.match_date = match_date
@@ -31,23 +35,15 @@ class FootballMatch:
 
         self._players: list[FootballPlayer] = players if players is not None else []
         self.viewers = viewers
-
-        day, month, year = match_date.split('-')
-        self.__id = id if id else str(uuid4())
-
-    @property
-    def id(self) -> str:
-        return self.__id
     
     @property
     def match_place(self) -> str:
-        return self._match_place
+        return super().name
     
     @match_place.setter
     def match_place(self, new_match_place: str) -> None:
-        if not isinstance(new_match_place, str):
-            raise TypeError("Match place must be a string")
-        self._match_place = new_match_place
+        super().name = new_match_place
+
     @property
     def home_team(self) -> str:
         return self._home_team

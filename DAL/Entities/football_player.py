@@ -1,7 +1,10 @@
 import re
 from uuid import uuid4
 
-class FootballPlayer:
+from DAL.Entities.abs_layers import ABCFootballPlayer
+from DAL.Entities.football_entity import FootballEntity
+
+class FootballPlayer(FootballEntity, ABCFootballPlayer):
     PATTERN_DATE = r"^(?:0[1-9]|[12][0-9]|3[01])-(?:0[1-9]|1[0-2])-\d{4}$"
     SALARY_LIMIT = 1000000
     POSSIBLE_STATUS: set = {"active", "injured", "retired", "dead"}
@@ -17,27 +20,16 @@ class FootballPlayer:
             health (int): health of the player
             salary (float): salary of the player
         """
-        self.name = name
+        super().__init__(name, id)
         self.surname = surname
         self.birth_date = birth_date
         self.health = health
         self.status = status
         self.salary = salary
-        self.__id = id if id else str(uuid4())
-
-    @property
-    def id(self) -> str:
-        return self.__id
     
     @property
-    def name(self) -> str:
-        return self._name
-
-    @name.setter
-    def name(self, value: str) -> None:
-        if not isinstance(value, str):
-            raise TypeError("Name must be a string")
-        self._name = value
+    def id(self) -> str:
+        return super().id
 
     @property
     def surname(self) -> str:
@@ -106,20 +98,20 @@ class FootballPlayer:
         self._salary = value
 
     def __str__(self) -> str:
-        return (f"FootballPlayer(id={self.__id}, name='{self._name}', surname='{self._surname}', "
-                f"birth_date={self._birth_date}, status='{self._status}', health={self._health}, "
-                f"salary={self._salary})")
+        return (f"FootballPlayer(id={self.id}, name='{self.name}', surname='{self.surname}', "
+                f"birth_date={self.birth_date}, status='{self.status}', health={self.health}, "
+                f"salary={self.salary})")
 
     def to_dict(self) -> dict:
         """Convert FootballPlayer to a dictionary."""
         return {
-            "id": self.__id,
-            "name": self._name,
-            "surname": self._surname,
-            "birth_date": self._birth_date,
-            "status": self._status,
-            "health": self._health,
-            "salary": self._salary,
+            "id": self.id,
+            "name": self.name,
+            "surname": self.surname,
+            "birth_date": self.birth_date,
+            "status": self.status,
+            "health": self.health,
+            "salary": self.salary,
         }
 
     @classmethod

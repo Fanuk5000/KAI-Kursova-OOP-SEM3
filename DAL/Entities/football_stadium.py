@@ -1,37 +1,39 @@
-from DAL.Entities.football_match import FootballMatch
+from socket import NI_DGRAM
+from turtle import pen
 from uuid import uuid4
 
+from DAL.Entities.football_match import FootballMatch
+from DAL.Entities.abs_layers import ABCFootballStadium
+from DAL.Entities.football_entity import FootballEntity
 
-class FootballStadium:
+
+class FootballStadium(FootballEntity, ABCFootballStadium):
     def __init__(self, stadium_name: str, seats_amount: int, price_for_place: float, football_match: FootballMatch = None, id: str = ''):  # type: ignore
         """Initialize a FootballStadium instance.
 
         Args:
-            stadium_name (str): _name of the stadium_
-            seats_amount (int): _description_
-            price_for_place (float): _description_
-            football_match (FootballMatch): _description_
+            stadium_name (str): name of the stadium
+            seats_amount (int): amount of seats
+            price_for_place (float): price for one place
+            football_match (FootballMatch): A football match class associated with the stadium
         """
+        super().__init__(stadium_name, id)
         self.stadium_name = stadium_name
         self.seats_amount = seats_amount
         self.price_for_place = price_for_place
         self.football_match = football_match
 
-        self.__id = id if id else str(uuid4())
-
     @property
     def id(self) -> str:
-        return self.__id
-    
+        return super().id
+
     @property
     def stadium_name(self) -> str:
-        return self._stadium_name
+        return super().name
 
     @stadium_name.setter
     def stadium_name(self, new_stadium_name: str) -> None:
-        if not isinstance(new_stadium_name, str):
-            raise TypeError("Stadium name must be a string")
-        self._stadium_name = new_stadium_name
+        super().name = new_stadium_name
 
     @property
     def seats_amount(self) -> int:
@@ -101,4 +103,3 @@ class FootballStadium:
                f"price_for_place={self.price_for_place}), "
                f"date of the match={self.football_match.match_date}), "
                f"Playing {self.football_match.home_team} vs {self.football_match.away_team} on {self.football_match.match_date})")
-
