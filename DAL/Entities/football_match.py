@@ -106,6 +106,8 @@ class FootballMatch(FootballEntity, ABCFootballMatch):
     def players(self, players: list[FootballPlayer]) -> None:
         if not all(isinstance(player, FootballPlayer) for player in players):
             raise TypeError("All players must be instances of FootballPlayer")
+        if len(self._players) > 10:
+            raise ValueError("A football match cannot have more than 11 players")
         self._players = players
 
     @property
