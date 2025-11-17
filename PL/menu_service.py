@@ -164,7 +164,7 @@ class MenuService:
 
     @classmethod
     def _add_player_to_file(cls) -> None:
-        new_instance = input("Enter name, surname, birth date, status, health, salary (space separated): ").split()
+        new_instance = input("Enter: name, surname, birth_date(DD-MM-YYYY), status(active, injured, retired, dead), health(<=100), salary(<1000000): \n").split()
         if len(new_instance) != 6:
             print("Invalid input. Please provide exactly 6 values.")
             return
@@ -211,7 +211,7 @@ class MenuService:
     # Match methods ---------------------------------------
     @classmethod
     def _add_match_to_file(cls) -> None:
-        new_instance = input("Enter match_place, home_team, away_team, match_date, match_status, score, viewers (space separated): ").split()
+        new_instance = input("Enter match_place, home_team, away_team, match_date(DD-MM-YYYY), match_status, score(xx:xx), viewers (space separated): \n").split()
         if len(new_instance) < 5:
             print("Invalid input. Please provide exactly 8 values.")
             return
@@ -260,7 +260,7 @@ class MenuService:
     @classmethod
     def _change_match_attribute(cls) -> None:
         match_id = input("Enter match id: ")
-        match_attribute = input("Enter match attribute to change (match_place, home_team, away_team, match_date, match_status, score, players, viewers): ")
+        match_attribute = input("Enter match attribute to change (match_place, home_team, away_team, match_date, match_status, score, players, viewers): \n")
         new_value = input("Enter new value: ")
 
         if new_value.replace('.', '', 1).isdigit() and '.' not in new_value:

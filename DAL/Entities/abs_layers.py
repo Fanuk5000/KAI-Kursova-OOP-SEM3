@@ -44,8 +44,8 @@ class ABCFootballStadium(ABC):
     def to_dict(self) -> dict: # type: ignore
         pass
     
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def from_dict(cls, data: dict) -> 'FootballStadium': # type: ignore
         pass
 
