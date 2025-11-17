@@ -1,17 +1,24 @@
+from uuid import uuid4
+
 import pytest
 
 from DAL.Entities.football_match import FootballMatch
 from DAL.Entities.football_player import FootballPlayer
 
+
+
 @pytest.fixture()
 def setup_working_football_player():
+    global pre_generated_id
+    pre_generated_id = str(uuid4())
     football_player = FootballPlayer(
         name="John",
         surname="Doe",
         birth_date="15-08-1990",
-        status="Active",
+        status="active",
         health=95.5,
-        salary=50000.0
+        salary=50000.0,
+        id=pre_generated_id
     )
     yield football_player
 
@@ -22,7 +29,7 @@ def setup_working_football_match(setup_working_football_player):
         home_team="Team A",
         away_team="Team B",
         match_date="20-09-2023",
-        match_status="Not played yet",
+        match_status="not_played_yet",
         score="00:00",
         players=[setup_working_football_player],
         viewers=1000
@@ -36,11 +43,11 @@ def test_football_match_initialization(setup_working_football_match, setup_worki
     assert football_match.home_team == "Team A"
     assert football_match.away_team == "Team B"
     assert football_match.match_date == "20-09-2023"
-    assert football_match.match_status == "Not played yet"
+    assert football_match.match_status == "not_played_yet"
     assert football_match.score == "00:00"
     assert football_match.players == [setup_working_football_player]
     assert football_match.viewers == 1000
-    assert football_match.id == "TT20092023"
+    assert football_match.id == pre_generated_id
 
 def test_football_match_invalid_match_place(setup_working_football_match):
     football_match = setup_working_football_match
@@ -106,14 +113,16 @@ def test_football_match_invalid_players(setup_working_football_match, setup_work
 def test_football_match_add_remove_player(setup_working_football_match, setup_working_football_player):
     football_match = setup_working_football_match
     football_player = setup_working_football_player
+    my_id = str(uuid4())
 
     new_player = FootballPlayer(
         name="Alice",
         surname="Smith",
         birth_date="22-11-1992",
-        status="Active",
+        status="active",
         health=90.0,
-        salary=60000.0
+        salary=60000.0,
+        id=my_id
     )
 
     football_match.add_player(new_player)

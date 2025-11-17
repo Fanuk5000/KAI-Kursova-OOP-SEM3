@@ -42,7 +42,10 @@ class FootballMatch(FootballEntity, ABCFootballMatch):
     
     @match_place.setter
     def match_place(self, new_match_place: str) -> None:
-        super().name = new_match_place
+        if not isinstance(new_match_place, str):
+            raise TypeError("Match place must be a string")
+        # assign backing attribute used by FootballEntity
+        self._name = new_match_place
 
     @property
     def home_team(self) -> str:

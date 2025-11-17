@@ -1,4 +1,5 @@
 import pytest
+from uuid import uuid4
 
 from DAL.Entities.football_match import FootballMatch
 from DAL.Entities.football_player import FootballPlayer
@@ -6,13 +7,16 @@ from DAL.Entities.football_stadium import FootballStadium
 
 @pytest.fixture()
 def setup_working_football_player():
+    global pre_generated_id
+    pre_generated_id = str(uuid4())
     football_player = FootballPlayer(
         name="John",
         surname="Doe",
         birth_date="15-08-1990",
-        status="Active",
+        status="active",
         health=95.5,
-        salary=50000.0
+        salary=50000.0,
+        id=pre_generated_id
     )
     yield football_player
 
@@ -33,10 +37,11 @@ def setup_working_football_match(setup_working_football_player):
         home_team="Team A",
         away_team="Team B",
         match_date="20-09-2023",
-        match_status="Not played yet",
+        match_status="not_played_yet",
         score="00:00",
         players=[setup_working_football_player],
-        viewers=1000
+        viewers=1000,
+        id=pre_generated_id
     )
     yield football_match
 
@@ -47,7 +52,7 @@ def test_football_stadium_initialization(setup_working_football_stadium, setup_w
     assert football_stadium.seats_amount == 50000
     assert football_stadium.price_for_place == 50.0
     assert football_stadium.football_match == setup_working_football_match
-    assert football_stadium.id == "S5000050.0A"
+    assert football_stadium.id == pre_generated_id
 
 def test_football_stadium_invalid_stadium_name(setup_working_football_stadium):
     football_stadium = setup_working_football_stadium

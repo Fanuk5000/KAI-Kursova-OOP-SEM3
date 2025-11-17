@@ -1,16 +1,20 @@
+from uuid import uuid4
 import pytest
 
 from DAL.Entities.football_player import FootballPlayer
 
 @pytest.fixture()
 def setup_working_football_player():
+    global pre_generated_id
+    pre_generated_id = str(uuid4())
     football_player = FootballPlayer(
         name="John",
         surname="Doe",
         birth_date="15-08-1990",
-        status="Active",
+        status="active",
         health=95.5,
-        salary=50000.0
+        salary=50000.0,
+        id=pre_generated_id
     )
     yield football_player
 
@@ -20,10 +24,10 @@ def test_football_player_initialization(setup_working_football_player):
     assert football_player.name == "John"
     assert football_player.surname == "Doe"
     assert football_player.birth_date == "15-08-1990"
-    assert football_player.status == "Active"
+    assert football_player.status == "active"
     assert football_player.health == 95.5
     assert football_player.salary == 50000.0
-    assert football_player.id == "JD15081990"
+    assert football_player.id == pre_generated_id
 
 def test_football_player_invalid_name(setup_working_football_player):
     football_player = setup_working_football_player

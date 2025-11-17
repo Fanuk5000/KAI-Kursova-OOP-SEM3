@@ -31,7 +31,10 @@ class FootballStadium(FootballEntity, ABCFootballStadium):
 
     @stadium_name.setter
     def stadium_name(self, new_stadium_name: str) -> None:
-        super().name = new_stadium_name
+        if not isinstance(new_stadium_name, str):
+            raise TypeError("Stadium name must be a string")
+        # assign backing attribute used by FootballEntity
+        self._name = new_stadium_name
 
     @property
     def seats_amount(self) -> int:
